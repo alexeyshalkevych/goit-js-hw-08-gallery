@@ -52,6 +52,7 @@ const renderItems = (parentRef, elemet) => {
 };
 
 const murkup = createListItem(gallery);
+
 renderItems(refs.galleryList, murkup);
 
 const replaceSourceImage = (item, newSource, newAlt) => {
@@ -69,16 +70,11 @@ const handleListClick = e => {
   const urlImage = e.target.dataset.source;
   const altImage = e.target.getAttribute("alt");
 
-  console.log(e.target);
-  console.log(urlImage);
-
   replaceSourceImage(refs.modalWindow, urlImage, altImage);
 
   refs.modalWindow.classList.add("is-open");
 
   window.addEventListener("keydown", handleKeyPress);
-  // window.addEventListener("keydown", leftClick);
-  // window.addEventListener("keydown", rightClick);
 };
 
 const closeModalWindow = () => {
@@ -99,59 +95,8 @@ const handleBackDropClick = e => {
   closeModalWindow();
 };
 
-// function leftClick(e) {
-//   if (e.code === "Escape") {
-//    return;
-//   }
-
-//   let num;
-//   let el = "";
-//   let alt = "";
-
-//   gallery.forEach((item, index) => {
-
-//     if (item.original === test) {
-//       num = index - 1;
-//       console.log(num);
-
-//     }
-
-//     if (num === index) {
-//       console.log(index);
-
-//       el = item.original;
-//     }
-//   });
-//   console.log(el);
-
-//   replaceSourceImage(refs.modalWindow, el, alt);
-// }
-
-// function rightClick() {
-//   let num = 0;
-//   let el = "";
-//   let alt = "";
-
-//   gallery.forEach((item, index) => {
-//     if (item.original === test) {
-//       num = index + 1;
-//     }
-
-//     if (num === index) {
-//       el = item.original;
-//     }
-//   });
-
-//   replaceSourceImage(refs.modalWindow, el, alt);
-// }
-
 function handleKeyPress(e) {
   e.preventDefault();
-  console.log(e.code);
-
-  // if (e.code === "ArrowRight") {
-  //   rightClick();
-  // }
 
   if (e.code !== "Escape") {
     return;
@@ -163,4 +108,3 @@ function handleKeyPress(e) {
 refs.galleryList.addEventListener("click", handleListClick);
 refs.closeModalWindowBtn.addEventListener("click", closeModalWindow);
 refs.boxOverlay.addEventListener("click", handleBackDropClick);
-
