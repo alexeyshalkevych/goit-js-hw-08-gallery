@@ -16,7 +16,7 @@ import gallery from "./gallery-items.js";
   </a>
 </li> */
 }
-
+let imgU;
 const refs = {
   galleryList: document.querySelector(".js-gallery"),
   modalWindow: document.querySelector(".js-lightbox"),
@@ -31,7 +31,7 @@ const createItemMurkup = ({ preview, original, description }) => {
   <li class="gallery__item">
     <a
       class="gallery__link"
-      href="asd${original}asd"
+      href="${original}"
     >
       <img
         class="gallery__image"
@@ -63,18 +63,24 @@ const replaceSourceImage = (item, newSource, newAlt) => {
 };
 
 const handleListClick = e => {
+  e.preventDefault();
+
   if (e.target === e.currentTarget) {
     return;
   }
 
   const urlImage = e.target.dataset.source;
   const altImage = e.target.getAttribute("alt");
+  imgU = urlImage;
+  console.log(urlImage);
 
   replaceSourceImage(refs.modalWindow, urlImage, altImage);
 
   refs.modalWindow.classList.add("is-open");
 
   window.addEventListener("keydown", handleKeyPress);
+  window.addEventListener("keydown", leftClick);
+  window.addEventListener("keydown", rightClick);
 };
 
 const closeModalWindow = () => {
@@ -83,8 +89,8 @@ const closeModalWindow = () => {
   refs.modalWindow.classList.remove("is-open");
 
   window.removeEventListener("keydown", handleKeyPress);
-  // window.removeEventListener("keydown", leftClick);
-  // window.removeEventListener("keydown", rightClick);
+  window.removeEventListener("keydown", leftClick);
+  window.removeEventListener("keydown", rightClick);
 };
 
 const handleBackDropClick = e => {
@@ -103,6 +109,59 @@ function handleKeyPress(e) {
   }
 
   closeModalWindow();
+}
+let k;
+function rightClick(e) {
+  if (e.code !== "ArrowRight") {
+    return;
+  }
+  let count;
+  gallery.forEach((item, index) => {
+    
+
+    if (imgU === item.original) {
+      count = index + 1;
+    }
+    if (count === gallery.length) {
+     
+      console.log("bla");
+      console.log(index);
+    }
+    if (count === index) {
+      imgU = item.original;
+      replaceSourceImage(refs.modalWindow, imgU, "altImage");
+
+      // console.log(count);
+      // console.log(imgU);
+    }
+
+   
+
+    // console.log(item.original);
+  });
+
+  console.log(e.code);
+}
+
+function leftClick(e) {
+  if (e.code !== "ArrowLeft") {
+    return;
+  }
+  let count = gallery.length;
+  gallery.forEach((item, index) => {
+    if (imgU === item.original) {
+      count = index - 1;
+    }
+
+    if (count === index) {
+      imgU = item.original;
+      replaceSourceImage(refs.modalWindow, imgU, "altImage");
+    }
+
+    // console.log(item.original);
+  });
+
+  console.log(e.code);
 }
 
 refs.galleryList.addEventListener("click", handleListClick);
