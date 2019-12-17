@@ -1,29 +1,16 @@
 "use strict";
 
 import gallery from "./gallery-items.js";
-{
-  /* <li class="gallery__item">
-  <a
-    class="gallery__link"
-    href="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg"
-  >
-    <img
-      class="gallery__image"
-      src="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546__340.jpg"
-      data-source="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg"
-      alt="Tulips"
-    />
-  </a>
-</li> */
-}
-let imgU;
+
 const refs = {
   galleryList: document.querySelector(".js-gallery"),
   modalWindow: document.querySelector(".js-lightbox"),
   closeModalWindowBtn: document.querySelector(
     "button[data-action=close-lightbox]"
   ),
-  boxOverlay: document.querySelector(".lightbox__content")
+  boxOverlay: document.querySelector(".lightbox__content"),
+  imgUrlCopy: new String(),
+  count: 0
 };
 
 const createItemMurkup = ({ preview, original, description }) => {
@@ -71,8 +58,8 @@ const handleListClick = e => {
 
   const urlImage = e.target.dataset.source;
   const altImage = e.target.getAttribute("alt");
-  imgU = urlImage;
-  console.log(urlImage);
+
+  refs.imgUrlCopy = urlImage;
 
   replaceSourceImage(refs.modalWindow, urlImage, altImage);
 
@@ -110,58 +97,53 @@ function handleKeyPress(e) {
 
   closeModalWindow();
 }
-let k;
+
 function rightClick(e) {
   if (e.code !== "ArrowRight") {
     return;
   }
-  let count;
+
   gallery.forEach((item, index) => {
-    
-
-    if (imgU === item.original) {
-      count = index + 1;
+    if (refs.imgUrlCopy === item.original) {
+      refs.count = index;
     }
-    if (count === gallery.length) {
-     
-      console.log("bla");
-      console.log(index);
-    }
-    if (count === index) {
-      imgU = item.original;
-      replaceSourceImage(refs.modalWindow, imgU, "altImage");
-
-      // console.log(count);
-      // console.log(imgU);
-    }
-
-   
-
-    // console.log(item.original);
   });
 
-  console.log(e.code);
+  if (refs.count === gallery.length - 1) {
+    refs.count = 0;
+
+    refs.imgUrlCopy = gallery[refs.count].original;
+    replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
+  } else {
+    refs.count++;
+
+    refs.imgUrlCopy = gallery[refs.count].original;
+    replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
+  }
 }
 
 function leftClick(e) {
   if (e.code !== "ArrowLeft") {
     return;
   }
-  let count = gallery.length;
+
   gallery.forEach((item, index) => {
-    if (imgU === item.original) {
-      count = index - 1;
+    if (refs.imgUrlCopy === item.original) {
+      refs.count = index;
     }
-
-    if (count === index) {
-      imgU = item.original;
-      replaceSourceImage(refs.modalWindow, imgU, "altImage");
-    }
-
-    // console.log(item.original);
   });
 
-  console.log(e.code);
+  if (refs.count === 0) {
+    refs.count = gallery.length - 1;
+
+    refs.imgUrlCopy = gallery[refs.count].original;
+    replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
+  } else {
+    refs.count--;
+
+    refs.imgUrlCopy = gallery[refs.count].original;
+    replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
+  }
 }
 
 refs.galleryList.addEventListener("click", handleListClick);
