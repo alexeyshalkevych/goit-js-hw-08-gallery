@@ -66,8 +66,8 @@ const handleListClick = e => {
   refs.modalWindow.classList.add("is-open");
 
   window.addEventListener("keydown", handleKeyPress);
-  window.addEventListener("keydown", leftClick);
-  window.addEventListener("keydown", rightClick);
+  window.addEventListener("keydown", leftPressKey);
+  window.addEventListener("keydown", rightPressKey);
 };
 
 const closeModalWindow = () => {
@@ -76,8 +76,8 @@ const closeModalWindow = () => {
   refs.modalWindow.classList.remove("is-open");
 
   window.removeEventListener("keydown", handleKeyPress);
-  window.removeEventListener("keydown", leftClick);
-  window.removeEventListener("keydown", rightClick);
+  window.removeEventListener("keydown", leftPressKey);
+  window.removeEventListener("keydown", rightPressKey);
 };
 
 const handleBackDropClick = e => {
@@ -98,7 +98,7 @@ function handleKeyPress(e) {
   closeModalWindow();
 }
 
-function rightClick(e) {
+function rightPressKey(e) {
   if (e.code !== "ArrowRight") {
     return;
   }
@@ -122,7 +122,7 @@ function rightClick(e) {
   }
 }
 
-function leftClick(e) {
+function leftPressKey(e) {
   if (e.code !== "ArrowLeft") {
     return;
   }
