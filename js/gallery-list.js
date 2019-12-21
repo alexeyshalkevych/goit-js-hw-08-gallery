@@ -99,23 +99,14 @@ function handleKeyPress(e) {
 }
 
 function pressKeyRightAndLeft(e) {
-  for (let index = 0; index < gallery.length; index++) {
-    const element = gallery[index];
+  refs.count = gallery.findIndex(item => item.original === refs.imgUrlCopy);
 
-    if (refs.imgUrlCopy === element.original) {
-      refs.count = index;
-      break;
-    }
-  }
   if (e.code === "ArrowLeft") {
     if (refs.count === 0) {
       refs.count = gallery.length - 1;
     } else {
       refs.count--;
     }
-
-    refs.imgUrlCopy = gallery[refs.count].original;
-    replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
   }
 
   if (e.code === "ArrowRight") {
@@ -124,10 +115,10 @@ function pressKeyRightAndLeft(e) {
     } else {
       refs.count++;
     }
-
-    refs.imgUrlCopy = gallery[refs.count].original;
-    replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
   }
+
+  refs.imgUrlCopy = gallery[refs.count].original;
+  replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
 
   return;
 }
@@ -136,7 +127,6 @@ function pressKeyRightAndLeft(e) {
 //   // if (e.code !== "ArrowRight") {
 //   //   return;
 //   // }
-
 
 //   // gallery.forEach((item, index) => {
 //   //   if (refs.imgUrlCopy === item.original) {
