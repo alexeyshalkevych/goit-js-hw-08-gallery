@@ -66,8 +66,8 @@ const handleListClick = e => {
   refs.modalWindow.classList.add("is-open");
 
   window.addEventListener("keydown", handleKeyPress);
-  window.addEventListener("keydown", leftPressKey);
-  window.addEventListener("keydown", rightPressKey);
+  // window.addEventListener("keydown", leftPressKey);
+  window.addEventListener("keydown", pressKeyRightAndLeft);
 };
 
 const closeModalWindow = () => {
@@ -76,8 +76,8 @@ const closeModalWindow = () => {
   refs.modalWindow.classList.remove("is-open");
 
   window.removeEventListener("keydown", handleKeyPress);
-  window.removeEventListener("keydown", leftPressKey);
-  window.removeEventListener("keydown", rightPressKey);
+  // window.removeEventListener("keydown", leftPressKey);
+  window.removeEventListener("keydown", pressKeyRightAndLeft);
 };
 
 const handleBackDropClick = e => {
@@ -98,53 +98,88 @@ function handleKeyPress(e) {
   closeModalWindow();
 }
 
-function rightPressKey(e) {
-  if (e.code !== "ArrowRight") {
-    return;
-  }
+function pressKeyRightAndLeft(e) {
+  for (let index = 0; index < gallery.length; index++) {
+    const element = gallery[index];
 
-  gallery.forEach((item, index) => {
-    if (refs.imgUrlCopy === item.original) {
+    if (refs.imgUrlCopy === element.original) {
       refs.count = index;
+      break;
     }
-  });
-
-  if (refs.count === gallery.length - 1) {
-    refs.count = 0;
-
-    refs.imgUrlCopy = gallery[refs.count].original;
-    replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
-  } else {
-    refs.count++;
+  }
+  if (e.code === "ArrowLeft") {
+    if (refs.count === 0) {
+      refs.count = gallery.length - 1;
+    } else {
+      refs.count--;
+    }
 
     refs.imgUrlCopy = gallery[refs.count].original;
     replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
   }
+
+  if (e.code === "ArrowRight") {
+    if (refs.count === gallery.length - 1) {
+      refs.count = 0;
+    } else {
+      refs.count++;
+    }
+
+    refs.imgUrlCopy = gallery[refs.count].original;
+    replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
+  }
+
+  return;
 }
 
-function leftPressKey(e) {
-  if (e.code !== "ArrowLeft") {
-    return;
-  }
+// function rightPressKey(e) {
+//   // if (e.code !== "ArrowRight") {
+//   //   return;
+//   // }
 
-  gallery.forEach((item, index) => {
-    if (refs.imgUrlCopy === item.original) {
-      refs.count = index;
-    }
-  });
 
-  if (refs.count === 0) {
-    refs.count = gallery.length - 1;
+//   // gallery.forEach((item, index) => {
+//   //   if (refs.imgUrlCopy === item.original) {
+//   //     refs.count = index;
+//   //   }
+//   // });
 
-    refs.imgUrlCopy = gallery[refs.count].original;
-    replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
-  } else {
-    refs.count--;
+//   // if (refs.count === gallery.length - 1) {
+//   //   refs.count = 0;
 
-    refs.imgUrlCopy = gallery[refs.count].original;
-    replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
-  }
-}
+//   //   refs.imgUrlCopy = gallery[refs.count].original;
+//   //   replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
+//   // } else {
+//   //   refs.count++;
+
+//   //   refs.imgUrlCopy = gallery[refs.count].original;
+//   //   replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
+//   // }
+// }
+
+// function leftPressKey(e) {
+//   // if (e.code !== "ArrowLeft") {
+//   //   return;
+//   // }
+
+//   // gallery.forEach((item, index) => {
+//   //   if (refs.imgUrlCopy === item.original) {
+//   //     refs.count = index;
+//   //   }
+//   // });
+
+//   // if (refs.count === 0) {
+//   //   refs.count = gallery.length - 1;
+
+//   //   refs.imgUrlCopy = gallery[refs.count].original;
+//   //   replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
+//   // } else {
+//   //   refs.count--;
+
+//   //   refs.imgUrlCopy = gallery[refs.count].original;
+//   //   replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
+//   // }
+// }
 
 refs.galleryList.addEventListener("click", handleListClick);
 refs.closeModalWindowBtn.addEventListener("click", closeModalWindow);
