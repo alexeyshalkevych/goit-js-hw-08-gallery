@@ -98,30 +98,51 @@ function handleKeyPress(e) {
   closeModalWindow();
 }
 
+// function pressKeyRightAndLeft(e) {
+//   refs.count = gallery.findIndex(item => item.original === refs.imgUrlCopy);
+
+//   if (e.code === "ArrowLeft") {
+//     refs.count = refs.count === 0 ? gallery.length - 1 : --refs.count;
+//   }
+
+//   if (e.code === "ArrowRight") {
+//     refs.count = refs.count === gallery.length - 1 ? 0 : ++refs.count;
+//   }
+
+//   refs.imgUrlCopy = gallery[refs.count].original;
+//   replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
+
+//   return;
+// }
+
 function pressKeyRightAndLeft(e) {
   refs.count = gallery.findIndex(item => item.original === refs.imgUrlCopy);
-
+  // ок получил индекс элемента
+  // но если он 0 то куда ты еще собираешься листать? по хорошему и кнопку надо задизеблить
+  // на первом и последнем слайдах
   if (e.code === "ArrowLeft") {
-    if (refs.count === 0) {
-      refs.count = gallery.length - 1;
-    } else {
-      refs.count--;
-    }
+    if (!e.code) return;
+    --refs.count;
+  } else {
+    if (e.code === gallery.length - 1) return;
+    ++refs.count;
   }
-
-  if (e.code === "ArrowRight") {
-    if (refs.count === gallery.length - 1) {
-      refs.count = 0;
-    } else {
-      refs.count++;
-    }
-  }
-
   refs.imgUrlCopy = gallery[refs.count].original;
   replaceSourceImage(refs.modalWindow, refs.imgUrlCopy, "altImage");
-
   return;
 }
+
+// if (refs.count === 0) {
+//   refs.count = gallery.length - 1;
+// } else {
+//   refs.count--;
+// }
+
+// if (refs.count === gallery.length - 1) {
+//   refs.count = 0;
+// } else {
+//   refs.count++;
+// }
 
 // function rightPressKey(e) {
 //   // if (e.code !== "ArrowRight") {
